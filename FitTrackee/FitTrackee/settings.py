@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -67,6 +69,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'FitTrackee.wsgi.application'
 
+
+# Extension of AbstractUser
+AUTH_USER_MODEL = 'users.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
