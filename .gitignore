@@ -106,5 +106,7 @@ include/
 
 #PyCharm
 .idea/
+
+#FitTrackee
 /FitTrackee/FitTrackee/settings_db_secret.py
 /db/initDB.sql
