@@ -19,10 +19,12 @@ from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
 
 from FitTrackee import settings
+from apps.user import views as user_view
 
 urlpatterns = [
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/login'}, name='logout'),
+    url(r'^register/$', user_view.register, name='register'),
     url(r'^users/', include('apps.users.urls')),
     url(r'^user/', include('apps.user.urls')),
     url(r'^admin/', admin.site.urls),
