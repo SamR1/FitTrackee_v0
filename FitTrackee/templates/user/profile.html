@@ -5,8 +5,37 @@
 {% block content %}
 
         <div class="container">
-        <h3>Profile</h3>
-        <a href="{% url 'user:edit' %}">edit my profile</a>
+          <h2 class="ft_title">Profile</h2>
+            <div class="row">
+              <div class="col-md-8">
+                  <div class="card">
+                      <div class="card-header">
+                        {{ request.user.username }} <a href="{% url 'user:edit' %}"><i
+                              class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                      </div>
+                      <div class="card-body">
+                          <!--<p>Username : {{ request.user.username }}</p>-->
+                          <p>First name : {{ request.user.first_name }}</p>
+                          <p>Last name : {{ request.user.last_name }}</p>
+                          <p>Email : {{ request.user.email }}</p>
+                          <p>Bio : {{ request.user.bio }}</p>
+                          <p>Location : {{ request.user.location }}</p>
+                          <p>Birth date : {{ request.user.birth_date }}</p>
+                          <p>Registration date : {{ request.user.date_joined }}</p>
+                      </div>
+                    </div>
+              </div>
+              <div class="col-md-4">
+                  <div class="card">
+                      <div class="card-header">
+                        Activities
+                      </div>
+                      <div class="card-body">
+                        <p>No activities for now...</p>
+                      </div>
+                    </div>
+              </div>
+            </div>
         </div>
 
 {% endblock %}
