@@ -7,13 +7,18 @@ from .forms import RegisterForm, ProfileForm
 
 @login_required
 def profile(request):
+    return render(request, 'user/profile.html')
+
+
+@login_required
+def edit(request):
     if request.method == 'POST':
         form = ProfileForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
     else:
         form = ProfileForm(instance=request.user)
-    return render(request, 'user/profile.html', {'form': form})
+    return render(request, 'user/edit.html', {'form': form})
 
 
 def register(request):
