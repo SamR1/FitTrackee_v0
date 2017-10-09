@@ -1,0 +1,44 @@
+[
+  {
+    "model": "activities.sport",
+    "pk": 1,
+    "fields": {
+      "label": "Cycling (Sport)"
+    }
+  },
+  {
+    "model": "activities.sport",
+    "pk": 2,
+    "fields": {
+      "label": "Cycling (Transport)"
+    }
+  },
+  {
+    "model": "activities.sport",
+    "pk": 3,
+    "fields": {
+      "label": "Hiking"
+    }
+  },
+  {
+    "model": "activities.sport",
+    "pk": 4,
+    "fields": {
+      "label": "Mountain Biking"
+    }
+  },
+  {
+    "model": "activities.sport",
+    "pk": 5,
+    "fields": {
+      "label": "Running"
+    }
+  },
+  {
+    "model": "activities.sport",
+    "pk": 6,
+    "fields": {
+      "label": "Walking"
+    }
+  }
+]
