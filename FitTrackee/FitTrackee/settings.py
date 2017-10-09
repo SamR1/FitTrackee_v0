@@ -38,7 +38,8 @@ INSTALLED_APPS = [
 
     'apps.users',
     'apps.user',
-    'apps.home'
+    'apps.home',
+    'apps.activities'
 ]
 
 MIDDLEWARE = [
@@ -114,7 +115,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 LOGIN_REDIRECT_URL = '/home/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
