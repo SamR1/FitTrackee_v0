@@ -110,3 +110,4 @@ include/
 #FitTrackee
 /FitTrackee/FitTrackee/settings_db_secret.py
 /db/initDB.sql
+/FitTrackee/media/

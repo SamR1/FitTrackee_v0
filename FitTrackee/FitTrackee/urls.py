@@ -37,3 +37,6 @@ urlpatterns = [
     url(r'^profile/$', user_view.profile, name='profile'),
     url(r'^$', home_view.index),
 ] + static(settings.STATIC_URL)
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

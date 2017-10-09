@@ -1,5 +1,8 @@
 from django.db import models
 
+import os
+import datetime
+
 from ..user.models import User
 
 
@@ -11,6 +14,9 @@ def user_directory_path(instance, filename):
 class Sport(models.Model):
     label = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.label
+
     class Meta:
         db_table = 'sports'
         verbose_name = 'sport'
@@ -18,7 +24,13 @@ class Sport(models.Model):
 
 
 class Gpx(models.Model):
-    gpx_file = models.FileField(upload_to=user_directory_path)
+    gpx_file = models.FileField(upload_to='gpx/%Y/%m/%d/')
+
+    def filename(self):
+        return os.path.basename(self.gpx_file.name)
+
+    def __str__(self):
+        return self.filename()
 
     class Meta:
         db_table = 'gpx'
@@ -29,21 +41,25 @@ class Gpx(models.Model):
 class Activity(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
-    gpx = models.OneToOneField(Gpx)
+    gpx = models.OneToOneField(Gpx, blank=True, null=True)
 
     activity_date = models.DateField()
     duration = models.DurationField()
-    pauses = models.DurationField()
-    distance = models.DecimalField(max_digits=5, decimal_places=2)
-    min_alt = models.DecimalField(max_digits=5, decimal_places=2)
-    max_alt = models.DecimalField(max_digits=5, decimal_places=2)
-    descent = models.DecimalField(max_digits=5, decimal_places=2)
-    ascent = models.DecimalField(max_digits=5, decimal_places=2)
-    max_speed = models.DecimalField(max_digits=5, decimal_places=2)
-    ave_speed = models.DecimalField(max_digits=5, decimal_places=2)
+    pauses = models.DurationField(blank=True, null=True)
+    moving = models.DurationField(blank=True, null=True)
+    distance = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    min_alt = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    max_alt = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    descent = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    ascent = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    max_speed = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    ave_speed = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
     creation_date = models.DateField(auto_now_add=True)
     modification_date = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return self.sport.label + " - " + self.activity_date.strftime('%Y-%m-%d')
 
     class Meta:
         db_table = 'activities'
