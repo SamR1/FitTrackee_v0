@@ -13,6 +13,8 @@ class Sport(models.Model):
 
     class Meta:
         db_table = 'sports'
+        verbose_name = 'sport'
+        verbose_name_plural = 'sports'
 
 
 class Gpx(models.Model):
@@ -20,6 +22,8 @@ class Gpx(models.Model):
 
     class Meta:
         db_table = 'gpx'
+        verbose_name = 'gpx'
+        verbose_name_plural = 'gpx'
 
 
 class Activity(models.Model):
@@ -43,3 +47,5 @@ class Activity(models.Model):
 
     class Meta:
         db_table = 'activities'
+        verbose_name = 'activity'
+        verbose_name_plural = 'activities'
