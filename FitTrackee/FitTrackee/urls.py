@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^register/$', login_forbidden(user_view.register), name='register'),
     url(r'^users/', include('apps.users.urls')),
     url(r'^user/', include('apps.user.urls')),
+    url(r'^activities/', include('apps.activities.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^home/',  include('apps.home.urls')),
     url(r'^profile/$', user_view.profile, name='profile'),
