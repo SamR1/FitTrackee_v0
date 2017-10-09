@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.db import transaction
 
@@ -39,7 +39,7 @@ def add_activity(request):
                     new_activity.moving = timedelta(seconds=gpx_data['moving_time'])
                     new_activity.distance = gpx_data['distance']
                     new_activity.min_alt = gpx_data['elevation_min']
-                    new_activity.max_alt = gpx_data['elevation_min']
+                    new_activity.max_alt = gpx_data['elevation_max']
                     new_activity.descent = gpx_data['downhill']
                     new_activity.ascent = gpx_data['uphill']
                     new_activity.max_speed = gpx_data['max_speed']
@@ -47,7 +47,8 @@ def add_activity(request):
 
                     new_activity.save()
 
-                    return redirect('activities:index')
+                    return redirect('/activities/' + str(new_activity.id))
+
             except Exception as e:
                 print(e)
                 err_msg = 'An error occurred, please retry'
@@ -57,6 +58,12 @@ def add_activity(request):
     else:
         form = AddActivityForm()
     return render(request, 'activities/add_activity.html',  {'form': form})
+
+
+@login_required
+def display_activity(request, activity_id):
+    activity = get_object_or_404(Activity, pk=activity_id)
+    return render(request, 'activities/display_activity.html', {'activity': activity})
 
 
 @login_required
