@@ -28,10 +28,20 @@
               <div class="col-md-4">
                   <div class="card">
                       <div class="card-header">
-                        Activities
+                        Last activities
                       </div>
                       <div class="card-body">
-                        <p>No activities for now...</p>
+                        {% if activities %}
+                          <ul>
+                        {% for activity in activities %}
+                            <li class="nav-item">
+                              <a class="nav-link" href='/activities/{{activity.id}}'>{{activity}}</a>
+                            </li>
+                        {% endfor %}
+                          </ul>
+                        {% else %}
+                          <p>No activities for now...</p>
+                        {% endif %}
                       </div>
                     </div>
               </div>

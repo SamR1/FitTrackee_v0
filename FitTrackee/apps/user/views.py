@@ -3,11 +3,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 
 from .forms import RegisterForm, ProfileForm
+from ..activities.models import Activity
 
 
 @login_required
 def profile(request):
-    return render(request, 'user/profile.html')
+    activities = Activity.objects.all().order_by('-activity_date').filter(
+        user_id=request.user.id)[:5]
+    return render(request, 'user/profile.html', {'activities': activities})
 
 
 @login_required
@@ -16,6 +19,7 @@ def edit(request):
         form = ProfileForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
+            return redirect('profile')
     else:
         form = ProfileForm(instance=request.user)
     return render(request, 'user/edit.html', {'form': form})
