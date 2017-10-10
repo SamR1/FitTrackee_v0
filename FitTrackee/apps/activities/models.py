@@ -42,7 +42,7 @@ class Activity(models.Model):
     sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
     gpx = models.OneToOneField(Gpx, blank=True, null=True)
 
-    activity_date = models.DateField()
+    activity_date = models.DateTimeField()
     duration = models.DurationField()
     pauses = models.DurationField(blank=True, null=True)
     moving = models.DurationField(blank=True, null=True)
@@ -54,8 +54,8 @@ class Activity(models.Model):
     max_speed = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     ave_speed = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
-    creation_date = models.DateField(auto_now_add=True)
-    modification_date = models.DateField(auto_now=True)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    modification_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.sport.label + " - " + self.activity_date.strftime('%Y-%m-%d')
