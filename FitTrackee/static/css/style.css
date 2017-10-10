@@ -11,3 +11,7 @@
 .ft_profileForm {
     margin-top: 2em;
 }
+
+#mapid {
+    height: 180px;
+}

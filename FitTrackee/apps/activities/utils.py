@@ -1,5 +1,4 @@
 import gpxpy.gpx
-import time
 
 
 def gpx_info(gpx_file):
@@ -21,7 +20,7 @@ def gpx_info(gpx_file):
                 try:
                     if speed > max_speed:
                         max_speed = speed
-                except:
+                except Exception:
                     pass
 
     gpx_data['max_speed'] = (max_speed / 1000) * 3600

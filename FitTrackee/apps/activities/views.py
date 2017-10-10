@@ -13,7 +13,6 @@ from datetime import timedelta
 
 @login_required
 def add_activity(request):
-
     if request.method == 'POST':
         form = AddActivityForm(request.POST, request.FILES)
         if form.is_valid():
@@ -57,13 +56,15 @@ def add_activity(request):
 
     else:
         form = AddActivityForm()
-    return render(request, 'activities/add_activity.html',  {'form': form})
+    return render(request, 'activities/add_activity.html', {'form': form})
 
 
 @login_required
 def display_activity(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
-    return render(request, 'activities/display_activity.html', {'activity': activity})
+    gpx_file = Gpx.objects.all().get(id=activity.gpx_id).gpx_file
+    gpx = str(gpx_file)
+    return render(request, 'activities/display_activity.html', {'activity': activity, 'gpx':  gpx})
 
 
 @login_required

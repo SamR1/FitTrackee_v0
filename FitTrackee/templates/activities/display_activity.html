@@ -13,15 +13,13 @@
                         {{ activity }}
                       </div>
                       <div class="card-body">
-                          <p>Start at {{ activity.activity_date | date:"M d, Y" }} {{ activity.activity_date | time:"H:i:s" }}</p>
-                          <p>Duration: {{ activity.duration }} (pauses: {{ activity.pauses }})</p>
-                          <p>Distance: {{ activity.distance }} km</p>
-                          <p>Average speed: {{ activity.ave_speed }} km/h / Max speed : {{ activity.max_speed }}</p>
-                          <p>Min Altitude: {{ activity.min_alt }} m / Max Altitude: {{ activity.max_alt }} m</p>
-                          <p>Ascent: {{ activity.ascent }} m / Descent: {{ activity.descent }} m</p>
-
-
-
+                          <p>Start at {{activity.activity_date | date:"M d, Y" }} {{ activity.activity_date | time:"H:i:s" }}</p>
+                          <p>Duration: {{activity.duration}} (pauses: {{activity.pauses}})</p>
+                          <p>Distance: {{activity.distance}}km</p>
+                          <p>Average speed: {{activity.ave_speed}} km/h / Max speed :
+                              {{activity.max_speed}} km/h</p>
+                          <p>Min altitude: {{activity.min_alt}}m / Max altitude: {{activity.max_alt}}m</p>
+                          <p>Ascent: {{activity.ascent}}m / Descent: {{activity.descent}}m</p>
                       </div>
                     </div>
               </div>
@@ -31,11 +29,38 @@
                         Map
                       </div>
                       <div class="card-body">
-                        <p>No Map</p>
+                        <div id="mapid"></div>
                       </div>
                     </div>
               </div>
             </div>
         </div>
 
+
+{% endblock %}
+
+{% block jsscript %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.3.1/gpx.min.js"></script>
+        <script type="text/javascript">
+
+            var map = L.map('mapid');
+            L.tileLayer('https://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=646952101ecc401da329322439370a8b', {
+                attribution: '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                apikey: '646952101ecc401da329322439370a8b'
+            }).addTo(map);
+
+            var gpx = 'http://' + location.host + '/media/' + '{{gpx}}' ;
+            new L.GPX(gpx, {
+                async: true,
+                marker_options: {
+                startIconUrl: 'http://' + location.host + '/static/images/pin-icon-start.png',
+                endIconUrl: 'http://' + location.host + '/static/images/pin-icon-end.png',
+                shadowUrl: 'http://' + location.host + '/static/images/pin-shadow.png'
+            }
+            }).on('loaded', function(e) {
+              map.fitBounds(e.target.getBounds());
+            }).addTo(map);
+
+        </script>
 {% endblock %}

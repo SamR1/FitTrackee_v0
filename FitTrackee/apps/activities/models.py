@@ -1,7 +1,6 @@
 from django.db import models
 
 import os
-import datetime
 
 from ..user.models import User
 
