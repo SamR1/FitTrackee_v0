@@ -22,6 +22,7 @@ from django.contrib.auth.decorators import user_passes_test
 from FitTrackee import settings
 from apps.user import views as user_view
 from apps.home import views as home_view
+from apps.activities.views import UserActivitiesList
 
 login_forbidden = user_passes_test(lambda u: u.is_anonymous(), '/home')
 
@@ -35,6 +36,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^home/',  include('apps.home.urls')),
     url(r'^profile/$', user_view.profile, name='profile'),
+    url(r'^api/activities/$', UserActivitiesList.as_view()),
     url(r'^$', home_view.index),
 ] + static(settings.STATIC_URL)
 

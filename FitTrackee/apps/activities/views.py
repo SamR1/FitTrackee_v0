@@ -3,6 +3,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.db import transaction
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication, permissions
+
 from .models import Activity, Gpx, Sport
 from ..user.models import User
 from .forms import AddActivityForm
@@ -72,3 +76,18 @@ def display_activities(request):
     activities = Activity.objects.all().order_by('-activity_date').filter(
         user_id=request.user.id)[:10]
     return render(request, 'activities/display_activities.html', {'activities': activities})
+
+
+# API
+#####
+
+class UserActivitiesList(APIView):
+
+    authentication_classes = (authentication.SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, format=None):
+        print(request.user)
+        activities = [activity.activity_date for activity in Activity.objects.all().order_by('-activity_date').filter(
+        user_id=request.user.id)[:10]]
+        return Response(activities)
