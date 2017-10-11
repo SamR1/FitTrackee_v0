@@ -69,7 +69,6 @@
             success: function(data){
                 labels = data.labels;
                 activitiesData = data.activities;
-                console.log(data.activities);
                 setChart();
             },
             error: function(error_data){
@@ -83,16 +82,11 @@
             var myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: labels,
+//                    labels: labels,
                     datasets: activitiesData
                 },
                 options: {
                     scales: {
-                        xAxes: [{
-                            ticks: {
-                                beginAtZero:true
-                            }
-                        }],
                         yAxes: [{
                             ticks: {
                                 beginAtZero:true
