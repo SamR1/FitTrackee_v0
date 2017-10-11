@@ -13,6 +13,7 @@ from .forms import AddActivityForm
 from .utils import gpx_info
 
 from datetime import timedelta
+import pandas
 
 
 @login_required
@@ -87,7 +88,30 @@ class UserActivitiesList(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
-        print(request.user)
-        activities = [activity.activity_date for activity in Activity.objects.all().order_by('-activity_date').filter(
-        user_id=request.user.id)[:10]]
-        return Response(activities)
+        # labels = [sport.label for sport in Sport.objects.all()]
+
+        activities_df = pandas.DataFrame([(activity.activity_date, activity.sport.label) for
+                                          activity in Activity.objects.all().order_by('-activity_date').filter(
+                                          user_id=request.user.id)[:10]], columns=['Date', 'Sport'])
+
+        labels_sport = activities_df.Sport.unique()
+        # labels_date = activities_df.Date.dt.strftime('%m-%Y').unique()
+
+        activities_data = []
+        dataframe_dict = {elem: pandas.DataFrame for elem in labels_sport}
+
+        for key in dataframe_dict.keys():
+            dataframe_dict[key] = activities_df[:][activities_df.Sport == key]
+            # dataframe_dict[key]['Date'] = dataframe_dict[key]['Date'].dt.strftime('%m-%Y')
+            del dataframe_dict[key]['Sport']
+            temp_dict = {
+                'label': key,
+                'data': [dataframe_dict[key]['Date'].count()]
+            }
+            activities_data.append(temp_dict)
+
+        data = {
+            "labels": labels_sport,
+            "activities": activities_data
+        }
+        return Response(data)

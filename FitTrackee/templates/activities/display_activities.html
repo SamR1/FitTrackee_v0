@@ -10,15 +10,15 @@
               <div class="col-md-6">
                 <div class="card text-center ft_activities">
                       <div class="card-header">
-                        Calendar
+                        Statistics
                       </div>
                       <div class="card-body">
-
+                        <canvas id="activityChart" width="400" height="400"></canvas>
                       </div>
                 </div>
                 <div class="card text-center ft_activities">
                       <div class="card-header">
-                        Statistics
+                        Calendar
                       </div>
                       <div class="card-body">
 
@@ -52,3 +52,57 @@
 
 
 {% endblock %}
+
+{% block jsscript %}
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js'></script>
+{% endblock %}
+
+    <script>
+{% block jquery %}
+
+        var endpoint = '/api/activities/';
+        var activitiesData = [];
+        var labels = [];
+        $.ajax({
+            method: "GET",
+            url: endpoint,
+            success: function(data){
+                labels = data.labels;
+                activitiesData = data.activities;
+                console.log(data.activities);
+                setChart();
+            },
+            error: function(error_data){
+                console.log("error");
+                console.log(error_data);
+            }
+        });
+
+        function setChart(){
+            var ctx = document.getElementById("activityChart");
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: activitiesData
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero:true
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true
+                            }
+                        }]
+                    }
+                }
+            });
+        }
+
+
+{% endblock %}
+    </script>
