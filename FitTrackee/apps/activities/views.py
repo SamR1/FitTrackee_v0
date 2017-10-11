@@ -69,4 +69,6 @@ def display_activity(request, activity_id):
 
 @login_required
 def display_activities(request):
-    return render(request, 'activities/display_activities.html')
+    activities = Activity.objects.all().order_by('-activity_date').filter(
+        user_id=request.user.id)[:10]
+    return render(request, 'activities/display_activities.html', {'activities': activities})
