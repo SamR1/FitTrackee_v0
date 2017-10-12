@@ -79,6 +79,12 @@ def display_activities(request):
     return render(request, 'activities/display_activities.html', {'activities': activities})
 
 
+@login_required
+def delete_activity(request, gpx_id):
+    Gpx.objects.get(id=gpx_id).delete()
+    return redirect('activities:index')
+
+
 # API
 #####
 

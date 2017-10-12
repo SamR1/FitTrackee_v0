@@ -31,7 +31,9 @@
                 {% for activity in activities %}
                   <div class="card text-center ft_activities">
                       <div class="card-header">
-                        <a class="nav-link" href='/activities/{{activity.id}}'>{{ activity }}</a>
+                        <a href='/activities/{{activity.id}}'>{{ activity }}</a>
+                          <a href='/activities/gpx/{{activity.gpx_id}}/delete'><i
+                                  class="fa fa-trash" aria-hidden="true"></i></a>
                       </div>
                       <div class="card-body">
                           <p><i class="fa fa-calendar" aria-hidden="true"></i> Start at
