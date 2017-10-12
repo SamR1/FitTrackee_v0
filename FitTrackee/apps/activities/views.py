@@ -97,23 +97,22 @@ class UserActivitiesList(APIView):
                                           activity in Activity.objects.all().order_by('-activity_date').filter(
                                           user_id=request.user.id)[:10]], columns=['Date', 'Sport'])
 
-        labels_sport = activities_df.Sport.unique()
-        # labels_date = activities_df.Date.dt.strftime('%m-%Y').unique()
-
+        sports_list = activities_df.Sport.unique()
+        labels_date = activities_df.Date
         activities_data = []
-        dataframe_dict = {elem: pandas.DataFrame for elem in labels_sport}
-
         i = 0
-        for key in dataframe_dict.keys():
-            dataframe_dict[key] = activities_df[:][activities_df.Sport == key]
-            # dataframe_dict[key]['Date'] = dataframe_dict[key]['Date'].dt.strftime('%m-%Y')
-            del dataframe_dict[key]['Sport']
+
+        for sport in sports_list:
+            activities_df[sport] = activities_df.Sport.str.extract("(" + sport + ")", expand=False)
+            activities_df[sport] = activities_df[sport].str.replace("(" + sport + ")", "1")
+            data_list = activities_df[sport].tolist()
+            data_list = [1 if x == '1' else 0 for x in data_list]
             temp_dict = {
-                'label': key,
+                'label': sport,
                 'backgroundColor': color[i],
                 'borderColor': color_border[i],
                 'borderWidth': 1,
-                'data': [dataframe_dict[key]['Date'].count()]
+                'data': data_list
             }
             activities_data.append(temp_dict)
             i += 1
@@ -121,7 +120,7 @@ class UserActivitiesList(APIView):
                 i = 0
 
         data = {
-            "labels": labels_sport,
+            "labels": labels_date,
             "activities": activities_data
         }
         return Response(data)
