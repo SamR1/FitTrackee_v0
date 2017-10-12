@@ -34,6 +34,9 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'activities:add' %}"><strong>Add an activity</strong></a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </li>
             {% else %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'login' %}">Login</a>
@@ -45,11 +48,14 @@
           </ul>
           {% if user.is_authenticated %}
           <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+            {% if request.user.picture %}
+            <li class="nav-item">
+            <div><img src="/media/{{ request.user.picture }}"
+                   class="img-responsive ft_nav-profile-img"></div>
+            </li>
+            {% endif %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'profile' %}">{{ request.user.username }}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'logout' %}">Logout</a>
             </li>
           </ul>
           {% endif %}

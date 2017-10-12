@@ -11,7 +11,7 @@
                     <div class="card text-center">
                         <h2 class="card-header">Profile</h2>
                         <div class="card-body">
-                            <form method="post">
+                            <form enctype="multipart/form-data" method="post">
                             {%csrf_token%}
                             {% for error in form.non_field_errors %}
                             <div class="form-group has-errors text-danger small">

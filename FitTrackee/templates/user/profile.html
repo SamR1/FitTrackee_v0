@@ -14,14 +14,23 @@
                               class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                       </div>
                       <div class="card-body">
-                          <!--<p>Username : {{ request.user.username }}</p>-->
-                          <p>First name : {{ request.user.first_name }}</p>
-                          <p>Last name : {{ request.user.last_name }}</p>
-                          <p>Email : {{ request.user.email }}</p>
-                          <p>Bio : {{ request.user.bio }}</p>
-                          <p>Location : {{ request.user.location }}</p>
-                          <p>Birth date : {{ request.user.birth_date }}</p>
-                          <p>Registration date : {{ request.user.date_joined }}</p>
+                          <div class="row">
+                              <div class="col-md-8">
+                                  <p>First name : {{ request.user.first_name }}</p>
+                                  <p>Last name : {{ request.user.last_name }}</p>
+                                  <p>Email : {{ request.user.email }}</p>
+                                  <p>Bio : {{ request.user.bio }}</p>
+                                  <p>Location : {{ request.user.location }}</p>
+                                  <p>Birth date : {{ request.user.birth_date }}</p>
+                                  <p>Registration date : {{ request.user.date_joined }}</p>
+                              </div>
+                              {% if request.user.picture %}
+                              <div class="col-md-4 mx-auto d-block">
+                                  <img src="/media/{{ request.user.picture }}"
+                                       class="img-fluid ft_profile-img">
+                              </div>
+                              {% endif %}
+                          </div>
                       </div>
                     </div>
               </div>
