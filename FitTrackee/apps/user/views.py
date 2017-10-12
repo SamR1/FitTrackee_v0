@@ -4,6 +4,7 @@ from django.contrib.auth import login, authenticate
 
 from .forms import RegisterForm, ProfileForm
 from ..activities.models import Activity
+from .models import User
 
 
 @login_required
@@ -23,6 +24,12 @@ def edit(request):
     else:
         form = ProfileForm(instance=request.user)
     return render(request, 'user/edit.html', {'form': form})
+
+
+@login_required
+def delete_picture(request):
+    User.objects.get(id=request.user.id).picture.delete(save=True)
+    return redirect('profile')
 
 
 def register(request):
