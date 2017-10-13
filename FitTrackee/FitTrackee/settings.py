@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'apps.user',
     'apps.home',
     'apps.activities',
+    'apps.api',
     'rest_framework',
 ]
 
