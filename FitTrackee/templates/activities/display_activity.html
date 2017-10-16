@@ -11,9 +11,16 @@
                   <div class="card">
                       <div class="card-header">
                         {{ activity }}
+                          {% if user in activity.likes.distinct %}
+                          <a href="#" class="badge badge-primary"
+                             id="like-btn"><span id="like-count">{{activity.likes.all|length}}</span>
+                          <i class="fa fa-heart" aria-hidden="true"></i></a>
+                          {% else %}
                           <a href="#" class="badge badge-secondary"
-                             id="#like-btn">{{activity.likes.all|length}}
+                             id="like-btn">
+                              <span id="like-count">{{activity.likes.all|length}}</span>
                           <i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                          {% endif %}
                       </div>
                       <div class="card-body">
                           <p><i class="fa fa-calendar" aria-hidden="true"></i> Start at
@@ -134,5 +141,29 @@
               map.fitBounds(e.target.getBounds());
             }).addTo(map);
 
+        </script>
+
+        <script type="text/javascript">
+            $('#like-btn').click(function () {
+                url = '/activities/' + '{{activity.id}}' + '/like';
+                $.ajax({
+                    method: 'GET',
+                    url: url,
+                    success: function(data){
+                        $('#like-count').html(data.likes);
+                        if (data.user_likes) {
+                            $('#like-btn').addClass( "badge-primary" );
+                            $('#like-btn').removeClass( "badge-secondary" );
+                        }
+                        else {
+                            $('#like-btn').removeClass( "badge-primary" );
+                            $('#like-btn').addClass( "badge-secondary" );
+                        }
+                    },
+                    error: function(error_data){
+                        console.error(error_data);
+                    }
+                });
+            })
         </script>
 {% endblock %}

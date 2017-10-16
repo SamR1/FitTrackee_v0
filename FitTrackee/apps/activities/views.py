@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
 from django.conf import settings
 from django.db import transaction
 
@@ -99,3 +100,17 @@ def delete_activity(request, gpx_id):
 def delete_comment(request, activity_id, comment_id):
     Comment.objects.get(id=comment_id).delete()
     return redirect('/activities/' + str(activity_id))
+
+
+@login_required
+def like_activity(request, activity_id):
+    activity = get_object_or_404(Activity, pk=activity_id)
+    if request.user in activity.likes.distinct():
+        activity.likes.remove(request.user.id)
+        user_likes = False
+    else:
+        activity.likes.add(request.user.id)
+        user_likes = True
+    likes = len(activity.likes.all())
+    activity.save()
+    return JsonResponse({'likes': likes, 'user_likes': user_likes}, content_type='application/json')
