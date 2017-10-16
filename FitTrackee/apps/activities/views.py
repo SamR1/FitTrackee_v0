@@ -93,3 +93,9 @@ def display_activities(request):
 def delete_activity(request, gpx_id):
     Gpx.objects.get(id=gpx_id).delete()
     return redirect('activities:index')
+
+
+@login_required
+def delete_comment(request, activity_id, comment_id):
+    Comment.objects.get(id=comment_id).delete()
+    return redirect('/activities/' + str(activity_id))

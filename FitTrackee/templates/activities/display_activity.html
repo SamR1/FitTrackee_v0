@@ -88,7 +88,12 @@
                             <blockquote class="blockquote mb-0">
                               <p class="ft_comment">{{comment.comment}}</p>
                               <footer class="blockquote-footer">{{comment.user.username}} - <cite
-                                      title="Source Title">{{comment.creation_date}}</cite></footer>
+                                      title="Source Title">{{comment.creation_date}}</cite>
+                                  {% if comment.user_id == request.user.id %}
+                                  <a href='/activities/{{activity.id}}/comment/{{comment.id}}/delete'>
+                                  <i class="fa fa-trash" aria-hidden="true"></i></a>
+                                  {% endif %}
+                              </footer>
                             </blockquote>
                           </div>
                       </div>
