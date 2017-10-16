@@ -41,6 +41,7 @@ class Activity(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
     gpx = models.OneToOneField(Gpx, blank=True, null=True)
+    likes = models.ManyToManyField(User, related_name='activity_users_likes', blank=True, null=True)
 
     activity_date = models.DateTimeField()
     duration = models.DurationField()
@@ -64,3 +65,22 @@ class Activity(models.Model):
         db_table = 'activities'
         verbose_name = 'activity'
         verbose_name_plural = 'activities'
+
+
+class Comment(models.Model):
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    likes = models.ManyToManyField(User, related_name='comment_users_likes', blank=True, null=True)
+
+    comment = models.TextField()
+    creation_date = models.DateTimeField(auto_now_add=True)
+    modification_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return " Comment by " + str(self.user.username) + ' at ' + self.creation_date.strftime(
+            '%Y-%m-%d')
+
+    class Meta:
+        db_table = 'comments'
+        verbose_name = 'comment'
+        verbose_name_plural = 'comments'
