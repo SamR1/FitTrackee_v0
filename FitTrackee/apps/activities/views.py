@@ -5,7 +5,7 @@ from django.db import transaction
 
 from .models import Activity, Gpx, Sport, Comment
 from ..user.models import User
-from .forms import AddActivityForm
+from .forms import AddActivityForm, AddCommentForm
 from .utils import gpx_info
 
 from datetime import timedelta
@@ -61,13 +61,25 @@ def add_activity(request):
 
 @login_required
 def display_activity(request, activity_id):
+    if request.method == 'POST':
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            new_comment = Comment()
+            new_comment.comment = form.cleaned_data.get('comment')
+            new_comment.activity_id = activity_id
+            new_comment.user_id = request.user.id
+
+            new_comment.save()
+
     activity = get_object_or_404(Activity, pk=activity_id)
     gpx_file = Gpx.objects.all().get(id=activity.gpx_id).gpx_file
     gpx = str(gpx_file)
-    comments = Comment.objects.all().filter(activity_id=activity_id)
+    comments = Comment.objects.all().order_by('-creation_date').filter(activity_id=activity_id)
+    form = AddCommentForm()
     return render(request, 'activities/display_activity.html', {'activity': activity,
                                                                 'gpx':  gpx,
-                                                                'comments': comments})
+                                                                'comments': comments,
+                                                                'form': form})
 
 
 @login_required

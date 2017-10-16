@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Sport, Gpx
+from .models import Sport, Gpx, Comment
 
 
 def validate_file_extension(value):
@@ -19,3 +19,11 @@ class AddActivityForm(forms.Form):
     class Meta:
         model = Gpx
         fields = ('gpx_file', )
+
+
+class AddCommentForm(forms.Form):
+    comment = forms.CharField(widget=forms.Textarea(attrs={'rows': '4'}))
+
+    class Meta:
+        model = Comment
+        fields = ('comment', )
