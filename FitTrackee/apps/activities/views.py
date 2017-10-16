@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.db import transaction
 
-from .models import Activity, Gpx, Sport
+from .models import Activity, Gpx, Sport, Comment
 from ..user.models import User
 from .forms import AddActivityForm
 from .utils import gpx_info
@@ -64,7 +64,10 @@ def display_activity(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
     gpx_file = Gpx.objects.all().get(id=activity.gpx_id).gpx_file
     gpx = str(gpx_file)
-    return render(request, 'activities/display_activity.html', {'activity': activity, 'gpx':  gpx})
+    comments = Comment.objects.all().filter(activity_id=activity_id)
+    return render(request, 'activities/display_activity.html', {'activity': activity,
+                                                                'gpx':  gpx,
+                                                                'comments': comments})
 
 
 @login_required

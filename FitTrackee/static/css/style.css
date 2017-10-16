@@ -26,6 +26,10 @@
     border-radius: 50%;
 }
 
+.ft_comment{
+    font-size: 0.90em;
+}
+
 #mapid {
     height: 240px;
 }

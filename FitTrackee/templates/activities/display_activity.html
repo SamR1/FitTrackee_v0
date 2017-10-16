@@ -11,6 +11,9 @@
                   <div class="card">
                       <div class="card-header">
                         {{ activity }}
+                          <a href="#" class="badge badge-secondary"
+                             id="#like-btn">{{activity.likes.all|length}}
+                          <i class="fa fa-heart-o" aria-hidden="true"></i></a>
                       </div>
                       <div class="card-body">
                           <p><i class="fa fa-calendar" aria-hidden="true"></i> Start at
@@ -41,6 +44,30 @@
                       </div>
                     </div>
               </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    {% if comments %}
+                    <ul>
+                    {% for comment in comments %}
+                      <div class="card text-center ft_activities">
+                          <div class="card-body">
+                            <blockquote class="blockquote mb-0">
+                              <p class="ft_comment">{{comment.comment}}</p>
+                              <footer class="blockquote-footer">{{comment.user.username}} - <cite
+                                      title="Source Title">{{comment.creation_date}}</cite></footer>
+                            </blockquote>
+                          </div>
+                      </div>
+                      {% endfor %}
+                    </ul>
+                    {% else %}
+                    <br>
+                    <p class="text-center">No comments for now...</p>
+                    {% endif %}
+                </div>
+                <div class="col-md-2"></div>
             </div>
         </div>
 
