@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}FitTrackee - Profile{% endblock %}
+{% block title %}FitTrackee - {{ft_user.username}}{% endblock %}
 
 {% block content %}
 
@@ -10,25 +10,23 @@
               <div class="col-md-8">
                   <div class="card">
                       <div class="card-header">
-                        {{ request.user.username }} <a href="{% url 'user:edit' %}"><i
-                              class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                        {{ ft_user.username }}
                       </div>
                       <div class="card-body">
                           <div class="row">
                               <div class="col-md-8">
-                                  <p>First name : {{ request.user.first_name }}</p>
-                                  <p>Last name : {{ request.user.last_name }}</p>
-                                  <p>Email : {{ request.user.email }}</p>
-                                  <p>Bio : {{ request.user.bio }}</p>
-                                  <p>Location : {{ request.user.location }}</p>
-                                  <p>Birth date : {{ request.user.birth_date }}</p>
-                                  <p>Registration date : {{ request.user.date_joined }}</p>
+                                  <p>First name : {{ ft_user.first_name }}</p>
+                                  <p>Last name : {{ ft_user.last_name }}</p>
+                                  <p>Email : {{ ft_user.email }}</p>
+                                  <p>Bio : {{ ft_user.bio }}</p>
+                                  <p>Location : {{ ft_user.location }}</p>
+                                  <p>Birth date : {{ ft_user.birth_date }}</p>
+                                  <p>Registration date : {{ ft_user.date_joined }}</p>
                               </div>
-                              {% if request.user.picture %}
+                              {% if ft_user.picture %}
                               <div class="col-md-4 mx-auto d-block text-center">
-                                  <img src="/media/{{ request.user.picture }}"
+                                  <img src="/media/{{ ft_user.picture }}"
                                        class="img-fluid ft_profile-img">
-                                  <p><a href="{% url 'user:delete-avatar' %}">delete image</a></p>
                               </div>
                               {% endif %}
                           </div>

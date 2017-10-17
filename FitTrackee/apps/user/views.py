@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate
 
 from .forms import RegisterForm, ProfileForm
@@ -45,3 +45,12 @@ def register(request):
     else:
         form = RegisterForm()
     return render(request, 'user/register.html', {'form': form})
+
+
+@login_required
+def view_user(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    activities = Activity.objects.all().order_by('-activity_date').filter(
+        user_id=user_id)[:5]
+    return render(request, 'user/display_user.html', {'ft_user': user,
+                                                      'activities': activities})

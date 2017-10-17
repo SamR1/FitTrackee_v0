@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}FitTrackee - Users{% endblock %}
+
+{% block content %}
+
+        <div class="container ft_profileForm">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    {% if ft_users %}
+                    <ul>
+                    {% for ft_user in ft_users %}
+                      <div class="card ft_activities">
+                          <div class="card-header">
+                              <a href="/user/{{ft_user.id}}">{{ft_user.username}}</a>
+                          </div>
+                          <div class="card-body">
+                              <div class="row">
+                                  <div class="col-md-8">
+                                      <p>Joined: {{ft_user.date_joined}}</p>
+                                      <p>Activities: {{ft_user.get_activities_count}}</p>
+                                  </div>
+
+                                  {% if ft_user.picture %}
+                                  <div class="col-md-4 mx-auto d-block text-center">
+                                      <img src="/media/{{ ft_user.picture }}"
+                                           class="img-fluid ft_profile-img-small">
+                                  </div>
+                                  {% endif %}
+                              </div>
+                          </div>
+                      </div>
+                      {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>No users for now...</p>
+                    {% endif %}
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+
+{% endblock %}

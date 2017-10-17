@@ -20,6 +20,12 @@
     border-radius: 50%;
 }
 
+.ft_profile-img-small{
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 50%;
+}
+
 .ft_nav-profile-img{
     max-width: 35px;
     max-height: 35px;
