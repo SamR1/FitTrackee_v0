@@ -1,6 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate
+from django.http import JsonResponse
+from django.db import transaction
 
 from .forms import RegisterForm, ProfileForm
 from ..activities.models import Activity
@@ -54,3 +56,41 @@ def view_user(request, user_id):
         user_id=user_id)[:5]
     return render(request, 'user/display_user.html', {'ft_user': user,
                                                       'activities': activities})
+
+
+@login_required
+def add_friend(request, user_id, friend_id):
+    print(user_id)
+    print(friend_id)
+    try:
+        user = get_object_or_404(User, pk=user_id)
+        user.follows.add(friend_id)
+        user.save()
+        FriendRequestSent = True
+    except Exception as e:
+        print(e.args)
+        FriendRequestSent = False
+
+    return JsonResponse({'FriendRequestSent': FriendRequestSent},
+                        content_type='application/json')
+
+
+@login_required
+def remove_friend(request, user_id, friend_id):
+    print(user_id)
+    print(friend_id)
+    try:
+        with transaction.atomic():
+            user = get_object_or_404(User, pk=user_id)
+            user.follows.remove(friend_id)
+            user.save()
+            friend = get_object_or_404(User, pk=friend_id)
+            friend.follows.remove(user_id)
+            friend.save()
+            UnFriendRequestSent = True
+    except Exception as e:
+        print(e.args)
+        UnFriendRequestSent = False
+
+    return JsonResponse({'FriendRequestSent': UnFriendRequestSent},
+                        content_type='application/json')
