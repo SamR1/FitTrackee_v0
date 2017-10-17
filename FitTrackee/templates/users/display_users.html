@@ -69,14 +69,11 @@ $('.friendAction').click(function () {
     var id = $(this).attr("id");
     var action = id.split("-");
     var url = '/user/{{ request.user.id }}/' + action[0] + '/' + action[1];
-    console.log(url);
 
     $.ajax({
     method: "GET",
     url: url,
     success: function(data){
-        console.log('data');
-        console.log(data);
         window.location = "/users"
         },
         error: function(error_data){
@@ -85,7 +82,6 @@ $('.friendAction').click(function () {
         }
     });
 });
-
 
 {% endblock %}
     </script>

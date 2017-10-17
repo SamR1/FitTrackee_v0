@@ -10,6 +10,11 @@
               <div class="col-md-6">
                   <div class="card">
                       <div class="card-header">
+                        {% if activity.user.picture %}
+                        <img src="/media/{{ activity.user.picture }}"
+                             class="img-fluid ft_nav-profile-img">
+                        {% endif %}
+                        <a href="/user/{{activity.user.id}}">{{ activity.user.username }}</a> -
                         {{ activity }}
                           {% if user in activity.likes.distinct %}
                           <a href="#" class="badge badge-primary"

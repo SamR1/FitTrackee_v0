@@ -5,7 +5,108 @@
 {% block content %}
 
         <div class="container">
-        Home
+          <h2 class="ft_title">FitTrackee</h2>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card text-center ft_activities">
+                      <div class="card-header">
+                        Your statistics
+                      </div>
+                      <div class="card-body">
+                        <canvas id="activityChart" width="400" height="400"></canvas>
+                      </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                {% if activities %}
+                <ul>
+                {% for activity in activities %}
+                  <div class="card text-center ft_activities">
+                      <div class="card-header">
+                        {% if activity.user.picture %}
+                        <img src="/media/{{ activity.user.picture }}"
+                             class="img-fluid ft_nav-profile-img">
+                        {% endif %}
+                        {% if activity.user.id == request.user.id %}
+                        <a href="/profile">
+                        {% else %}
+                        <a href="/user/{{activity.user.id}}">
+                        {% endif %}
+                        {{ activity.user.username }}</a> -
+                        <a href='/activities/{{activity.id}}'>{{ activity }}</a>
+                        {% if activity.user.id == request.user.id %}
+                          <a href='/activities/gpx/{{activity.gpx_id}}/delete'><i
+                                  class="fa fa-trash" aria-hidden="true"></i></a>
+                        {% endif %}
+                      </div>
+                      <div class="card-body">
+                          <p><i class="fa fa-calendar" aria-hidden="true"></i> Start at
+                              {{activity.activity_date | date:"M d, Y"}} {{activity.activity_date | time:"H:i:s"}} </p>
+                          <p><i class="fa fa-clock-o" aria-hidden="true"></i> Duration:
+                              {{activity.duration}} - <i class="fa fa-road" aria-hidden="true"></i>
+                              Distance: {{activity.distance}}km</p>
+                          <span class="badge badge-secondary">{{activity.likes.all|length}}
+                          <i class="fa fa-heart" aria-hidden="true"></i></span>
+                          <span class="badge badge-secondary">{{activity.get_comments_nb}} <i
+                                  class="fa fa-comments"
+                              aria-hidden="true"></i></span>
+                      </div>
+                  </div>
+                  {% endfor %}
+                </ul>
+                {% else %}
+                <p>No activities for now...</p>
+                {% endif %}
+              </div>
+            </div>
         </div>
 
+
 {% endblock %}
+
+{% block jsscript %}
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js'></script>
+{% endblock %}
+
+    <script>
+{% block jquery %}
+
+        var endpoint = '/api/activities/';
+        var activitiesData = [];
+        var labels = [];
+        $.ajax({
+            method: "GET",
+            url: endpoint,
+            success: function(data){
+                labels = data.labels;
+                activitiesData = data.activities;
+                setChart();
+            },
+            error: function(error_data){
+                console.log("error");
+                console.log(error_data);
+            }
+        });
+
+        function setChart(){
+            var ctx = document.getElementById("activityChart");
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+//                    labels: labels,
+                    datasets: activitiesData
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true
+                            }
+                        }]
+                    }
+                }
+            });
+        }
+
+{% endblock %}
+    </script>

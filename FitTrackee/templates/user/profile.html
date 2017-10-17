@@ -56,14 +56,46 @@
                     </div>
               </div>
             </div>
+
             <div class="row">
                 <div class="col-md-8">
-                    {% if activity.likes.all > 0 %}
+
+                    {% if request.user.follows.all %}
                     <ul>
-                    {% for friend in activity.likes.all %}
-                      <div class="card text-center ft_activities">
+                        <br><h3>Friends</h3>
+                    {% for friend in request.user.follows.all %}
+                      <div class="card ft_activities">
+                          <div class="card-header">
+                              <a href="/user/{{friend.id}}">{{friend.username}}</a>
+                              {% if ft_user.id != request.user.id %}
+                                  {% if friend in request.user.follows.all and request.user in friend.follows.all %}
+                                  <a href="#" class="badge badge-primary friendAction"
+                                     id="removeFriend-{{friend.id}}"><i
+                                          class="fa fa-user-times"></i></a>
+                                  {% elif friend in request.user.follows.all and not request.user in friend.follows.all %}
+                                  <span class="badge badge-warning"><i class="fa fa-user"></i>
+                                      friend request pending</span>
+                                  {% elif not friend in request.user.follows.all and request.user in friend.follows.all %}
+                                  <a href="#" class="badge badge-info friendAction"
+                                     id="addFriend-{{friend.id}}"><i class="fa fa-user-plus"></i>
+                                      waiting your response</a>
+                                  {% endif %}
+                              {% endif %}
+                          </div>
                           <div class="card-body">
-                            {{friend.name}}
+                              <div class="row">
+                                  <div class="col-md-8">
+                                      <p>Joined: {{friend.date_joined}}</p>
+                                      <p>Activities: {{friend.get_activities_count}}</p>
+                                  </div>
+
+                                  {% if friend.picture %}
+                                  <div class="col-md-4 mx-auto d-block text-center">
+                                      <img src="/media/{{ friend.picture }}"
+                                           class="img-fluid ft_profile-img-small">
+                                  </div>
+                                  {% endif %}
+                              </div>
                           </div>
                       </div>
                       {% endfor %}
@@ -79,3 +111,28 @@
         </div>
 
 {% endblock %}
+
+    <script>
+{% block jquery %}
+
+$('.friendAction').click(function () {
+
+    var id = $(this).attr("id");
+    var action = id.split("-");
+    var url = '/user/{{ request.user.id }}/' + action[0] + '/' + action[1];
+
+    $.ajax({
+    method: "GET",
+    url: url,
+    success: function(data){
+        window.location = "/profile"
+        },
+        error: function(error_data){
+            console.log("error");
+            console.log(error_data);
+        }
+    });
+});
+
+{% endblock %}
+    </script>

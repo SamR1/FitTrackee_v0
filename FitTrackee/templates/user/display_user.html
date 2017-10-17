@@ -54,25 +54,6 @@
                     </div>
               </div>
             </div>
-            <div class="row">
-                <div class="col-md-8">
-                    {% if activity.likes.all > 0 %}
-                    <ul>
-                    {% for friend in activity.likes.all %}
-                      <div class="card text-center ft_activities">
-                          <div class="card-body">
-                            {{friend.name}}
-                          </div>
-                      </div>
-                      {% endfor %}
-                    </ul>
-                    {% else %}
-                    <br>
-                    <p class="text-center">No friends for now...</p>
-                    {% endif %}
-                    <p class="text-center"><a href="#">Search for friends</a></p>
-                </div>
-            </div>
         </div>
 
 {% endblock %}
