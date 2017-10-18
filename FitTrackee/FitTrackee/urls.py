@@ -24,6 +24,7 @@ from apps.user import views as user_view
 from apps.home import views as home_view
 
 login_forbidden = user_passes_test(lambda u: u.is_anonymous(), '/home')
+anonymous_forbidden = user_passes_test(lambda u: u.is_authenticated(), '/login')
 
 urlpatterns = [
     url(r'^login/$', login_forbidden(auth_views.login), name='login'),
@@ -36,7 +37,7 @@ urlpatterns = [
     url(r'^home/',  include('apps.home.urls')),
     url(r'^profile/$', user_view.profile, name='profile'),
     url(r'^api/', include('apps.api.urls')),
-    url(r'^$', home_view.index),
+    url(r'^$', anonymous_forbidden(home_view.index)),
 ] + static(settings.STATIC_URL)
 
 if settings.DEBUG:

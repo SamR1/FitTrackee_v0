@@ -8,7 +8,8 @@
 
 Workout/activity tracker app (realized during the [CodingAcademy](http://www.coding-academy.fr/en/) training), in order to learn to 
 use Django.    
-_(this version is incomplete, and will be rewritten with a new architecture (Python API and JS 
+_(work in progress: this version is incomplete, and will be rewritten with a new architecture 
+(Python API and JS 
 Front App))_
 
 Based on:
