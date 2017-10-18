@@ -18,3 +18,9 @@ class User(AbstractUser):
     def get_activities_count(self):
         user = User.objects.filter(pk=self.id).annotate(activity__count=Count('activity'))
         return user[0].activity__count
+
+    def get_friends(self):
+        friends = self.follows.all()
+        # only friends who accepted friend requests
+        friends_list = [friend.id for friend in friends if self in friend.follows.all()]
+        return friends_list
